@@ -1,0 +1,346 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Rehan — Portfolio</title>
+  <meta name="description" content="Portfolio of video editor & graphic designer — YouTube edits, motion, web & graphic work." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg:#0f1724; /* dark navy */
+      --card:#0b1220;
+      --muted:#9aa7bf;
+      --accent:#6ee7b7; /* mint */
+      --glass: rgba(255,255,255,0.03);
+      --radius:14px;
+      --max-width:1100px;
+      font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
+      color-scheme: dark;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      background:linear-gradient(180deg,var(--bg) 0%, #071022 100%);
+      color:#e6eef8;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      line-height:1.4;
+      padding:32px 20px;
+      display:flex;justify-content:center;
+    }
+    .site{width:100%;max-width:var(--max-width)}
+
+    /* Header / Hero */
+    header{display:flex;align-items:center;gap:20px;margin-bottom:28px}
+    .brand{display:flex;gap:14px;align-items:center}
+    .logo{
+      width:68px;height:68px;border-radius:14px;background:linear-gradient(135deg,var(--accent),#49c5ff);display:flex;align-items:center;justify-content:center;font-weight:800;color:#04202a;font-size:20px;box-shadow:0 6px 22px rgba(0,0,0,0.6)
+    }
+    .title{font-size:18px;font-weight:700}
+    nav{margin-left:auto}
+    nav a{color:var(--muted);text-decoration:none;margin-left:16px;font-weight:600}
+    nav a.primary{color:var(--accent)}
+
+    .hero{
+      display:grid;grid-template-columns:1fr 320px;gap:22px;margin-bottom:26px;align-items:center
+    }
+    .intro{background:var(--card);padding:22px;border-radius:var(--radius);box-shadow:0 6px 30px rgba(2,6,23,0.6)}
+    .intro h1{margin:0;font-size:26px}
+    .intro p{color:var(--muted);margin-top:10px}
+    .cta{margin-top:14px;display:flex;gap:10px}
+    .btn{background:linear-gradient(90deg,var(--accent),#4bd1ff);border:none;padding:10px 14px;border-radius:12px;color:#021018;font-weight:700;cursor:pointer}
+    .ghost{background:transparent;border:1px solid rgba(255,255,255,0.06);padding:10px 14px;border-radius:12px;color:var(--muted);cursor:pointer}
+
+    .stats{background:linear-gradient(180deg,rgba(255,255,255,0.02),transparent);padding:16px;border-radius:12px}
+    .stat-row{display:flex;gap:12px}
+    .stat{flex:1;padding:10px;background:var(--glass);border-radius:10px;text-align:center}
+    .stat b{display:block;font-size:18px}
+    .stat small{color:var(--muted)}
+
+    /* Portfolio */
+    section{margin-bottom:34px}
+    .section-head{display:flex;align-items:end;justify-content:space-between;margin-bottom:14px}
+    .section-head h2{margin:0}
+    .filters{display:flex;gap:8px}
+    .filters button{background:transparent;border:1px solid rgba(255,255,255,0.04);padding:8px 10px;border-radius:10px;color:var(--muted);cursor:pointer}
+    .filters button.active{border-color:var(--accent);color:var(--accent)}
+
+    .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+    .card{background:var(--card);border-radius:12px;overflow:hidden;position:relative;cursor:pointer}
+    .thumb{height:170px;background-size:cover;background-position:center}
+    .card .meta{padding:12px}
+    .card .meta h3{margin:0;font-size:15px}
+    .card .meta p{margin:6px 0 0;color:var(--muted);font-size:13px}
+
+    /* About & Experience */
+    .about-grid{display:grid;grid-template-columns:1fr 340px;gap:18px}
+    .box{background:var(--card);padding:18px;border-radius:12px}
+    .timeline{list-style:none;padding:0;margin:0}
+    .timeline li{padding:12px 0;border-left:3px solid rgba(255,255,255,0.03);margin-left:8px}
+    .timeline .when{color:var(--muted);font-size:13px}
+
+    /* Contact */
+    form{display:grid;gap:10px}
+    input,textarea{background:transparent;border:1px solid rgba(255,255,255,0.05);padding:10px;border-radius:10px;color:inherit}
+    textarea{min-height:120px}
+    small.muted{color:var(--muted)}
+
+    /* modal */
+    .modal{position:fixed;inset:0;background:rgba(1,2,6,0.7);display:flex;align-items:center;justify-content:center;padding:16px;z-index:60;opacity:0;pointer-events:none;transition:opacity .18s}
+    .modal.open{opacity:1;pointer-events:auto}
+    .modal .win{width:100%;max-width:980px;background:linear-gradient(180deg,#071428, #071226);border-radius:12px;overflow:hidden}
+    .modal .win header{display:flex;justify-content:space-between;align-items:center;padding:10px 12px}
+    .close{background:transparent;border:none;color:var(--muted);font-weight:700;cursor:pointer}
+    .video-wrap{position:relative;padding-top:56.25%}
+    .video-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+
+    /* Responsive */
+    @media (max-width:980px){
+      .hero{grid-template-columns:1fr}
+      .grid{grid-template-columns:repeat(2,1fr)}
+      .about-grid{grid-template-columns:1fr}
+    }
+    @media (max-width:560px){
+      nav{display:none}
+      .grid{grid-template-columns:1fr}
+      header{flex-direction:column;align-items:flex-start}
+      .logo{width:56px;height:56px}
+    }
+
+    /* helper */
+    .muted{color:var(--muted)}
+  </style>
+</head>
+<body>
+  <div class="site">
+    <header>
+      <div class="brand">
+        <div class="logo">RS</div>
+        <div>
+          <div class="title">Rehan Siddiqui</div>
+          <div class="muted">Video editor • Graphic designer • Web designer</div>
+        </div>
+      </div>
+      <nav>
+        <a href="#work">Work</a>
+        <a href="#about">About</a>
+        <a href="#contact" class="primary">Contact</a>
+      </nav>
+    </header>
+
+    <main>
+      <section class="hero">
+        <div class="intro">
+          <h1>Hi, I'm <strong>Rehan</strong> — I craft fast-paced YouTube edits, motion clips & visuals.</h1>
+          <p>I have 4 years of experience editing videos, designing websites and creating graphics. I've collaborated with YouTubers and creative agencies to deliver thumbnails, promos and short-form edits that grow audiences.</p>
+          <div class="cta">
+            <button class="btn" onclick="scrollToSection('work')">See my work</button>
+            <a class="ghost" href="#contact">Hire / Collab</a>
+          </div>
+          <div style="margin-top:14px" class="stats">
+            <div class="stat-row">
+              <div class="stat"><b>4+</b><small>yrs experience</small></div>
+              <div class="stat"><b>50+</b><small>projects</small></div>
+              <div class="stat"><b>10+</b><small>clients</small></div>
+            </div>
+          </div>
+        </div>
+
+        <aside class="stats">
+          <div style="display:flex;flex-direction:column;gap:10px">
+            <div style="font-weight:700">Skills</div>
+            <div class="muted">Premiere Pro · After Effects · Photoshop · Figma · HTML/CSS · JS · Social media manager </div>
+            <div style="margin-top:12px" class="muted">Available for freelance & long-term work.<br>Based in Lucknow</div>
+          </div>
+        </aside>
+      </section>
+
+      <section id="work">
+        <div class="section-head">
+          <h2>Selected Work</h2>
+          <div class="filters" role="tablist" aria-label="Filter portfolio">
+            <button class="active" data-filter="all">All</button>
+            <button data-filter="video">YouTube edits</button>
+            <button data-filter="graphic">Graphic design</button>
+            <button data-filter="web">Web / UI</button>
+          </div>
+        </div>
+
+        <div class="grid" id="portfolio">
+          <!-- Video cards: add your YouTube video id to data-youtube -->
+          <article class="card" data-type="video" data-title="Fast-paced Montage" data-youtube="dQw4w9WgXcQ">
+            <div class="thumb" style="background-image:url('https://img.youtube.com/vi/dQw4w9WgXcQ/maxresdefault.jpg')"></div>
+            <div class="meta"><h3>Fast-paced Montage</h3><p class="muted">YouTube edit • Promo</p></div>
+          </article>
+
+          <article class="card" data-type="video" data-title="Hook Edit" data-youtube="M7lc1UVf-VE">
+            <div class="thumb" style="background-image:url('https://img.youtube.com/vi/M7lc1UVf-VE/maxresdefault.jpg')"></div>
+            <div class="meta"><h3>Hook Edit</h3><p class="muted">Short-format edit</p></div>
+          </article>
+
+          <!-- Graphic designs -->
+          <article class="card" data-type="graphic" data-image="/assets/thumb-graphic-1.jpg">
+            <div class="thumb" style="background-image:url('https://images.unsplash.com/photo-1523475496153-3d6ccf8d5d9e?auto=format&fit=crop&w=1200&q=60')"></div>
+            <div class="meta"><h3>Thumbnail Series</h3><p class="muted">YouTube thumbnails</p></div>
+          </article>
+
+          <article class="card" data-type="graphic" data-image="/assets/thumb-graphic-2.jpg">
+            <div class="thumb" style="background-image:url('https://images.unsplash.com/photo-1503602642458-232111445657?auto=format&fit=crop&w=1200&q=60')"></div>
+            <div class="meta"><h3>Poster Design</h3><p class="muted">Promo poster</p></div>
+          </article>
+
+          <article class="card" data-type="web" data-image="/assets/thumb-web-1.jpg">
+            <div class="thumb" style="background-image:url('https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=1200&q=60')"></div>
+            <div class="meta"><h3>Landing Page UI</h3><p class="muted">Figma → Web</p></div>
+          </article>
+
+          <article class="card" data-type="web" data-image="/assets/thumb-web-2.jpg">
+            <div class="thumb" style="background-image:url('https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=1200&q=60')"></div>
+            <div class="meta"><h3>Website Concept</h3><p class="muted">Agency work</p></div>
+          </article>
+
+        </div>
+      </section>
+
+      <section id="about">
+        <div class="about-grid">
+          <div class="box">
+            <h2>About</h2>
+            <p>I'm a multimedia creative with 4 years of hands-on experience in video editing, graphic design and front-end web design. I focus on fast turnaround edits for YouTube and TikTok, attention-grabbing thumbnails, and clean, responsive landing pages.</p>
+            <h3 style="margin-top:12px">What I bring</h3>
+            <ul>
+              <li>Story-driven edits & pacing for retention</li>
+              <li>Thumbnail & brand design that converts</li>
+              <li>Responsive web designs & small interactions</li>
+              <li>Collaboration with creators & agencies</li>
+            </ul>
+          </div>
+
+          <aside class="box">
+            <h3>Experience</h3>
+            <ul class="timeline">
+              <li>
+                <div><strong>Freelance Editor — Various YouTubers</strong></div>
+                <div class="when">2022 — present</div>
+                <div class="muted">Fast edits, thumbnails, channel growth strategies.</div>
+              </li>
+              <li>
+                <div><strong>Contract — Creative Agency</strong></div>
+                <div class="when">2021 — 2022</div>
+                <div class="muted">Worked on promo videos, web visuals and marketing assets.</div>
+              </li>
+              <li>
+                <div><strong>Junior Editor</strong></div>
+                <div class="when">2020 — 2021</div>
+                <div class="muted">Cut vlogs, short-form content and social ads.</div>
+              </li>
+            </ul>
+            <div style="margin-top:10px"><small class="muted">Tools: Premiere Pro · After Effects · Photoshop · Illustrator · Figma · VS Code</small></div>
+          </aside>
+        </div>
+      </section>
+
+      <section id="contact">
+        <div class="section-head"><h2>Contact</h2><div class="muted">Let's work together →</div></div>
+        <div class="about-grid">
+          <div class="box">
+            <form onsubmit="event.preventDefault(); alert('Replace this with your form handler or email link.');">
+              <label>
+                <div>Name</div>
+                <input name="name" placeholder="Your name — e.g. John" required>
+              </label>
+              <label>
+                <div>Email</div>
+                <input name="email" type="email" placeholder="you@example.com" required>
+              </label>
+              <label>
+                <div>Message</div>
+                <textarea name="message" placeholder="Tell me about your project"></textarea>
+              </label>
+              <div style="display:flex;gap:8px;margin-top:8px">
+                <button class="btn">Send</button>
+                <a class="ghost" href="#" onclick="downloadResume(event)">Download resume</a>
+              </div>
+            </form>
+          </div>
+
+          <aside class="box">
+            <h3>Quick info</h3>
+            <p class="muted">Email: <strong>youremail@example.com</strong></p>
+            <p class="muted">Rates: Available on request — day rates & project quotes</p>
+            <p class="muted">Open for remote & occasional on-site work</p>
+          </aside>
+        </div>
+      </section>
+
+    </main>
+
+    <footer style="text-align:center;color:var(--muted);padding:20px 0">© <span id="year"></span> Your Name — Built with ❤️ for creators</footer>
+  </div>
+
+  <!-- Modal for video/image preview -->
+  <div class="modal" id="modal" role="dialog" aria-hidden="true">
+    <div class="win" role="document">
+      <header>
+        <div id="modalTitle" style="font-weight:700"></div>
+        <button class="close" onclick="closeModal()">Close</button>
+      </header>
+      <div class="video-wrap" id="modalContent"></div>
+    </div>
+  </div>
+
+  <script>
+    // Basic behavior: filtering, modal previews and small helpers
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    function scrollToSection(id){document.getElementById(id).scrollIntoView({behavior:'smooth'})}
+
+    // Filters
+    document.querySelectorAll('.filters button').forEach(btn=>{
+      btn.addEventListener('click', ()=>{
+        document.querySelectorAll('.filters button').forEach(b=>b.classList.remove('active'));
+        btn.classList.add('active');
+        let f = btn.dataset.filter;
+        document.querySelectorAll('#portfolio .card').forEach(card=>{
+          if(f==='all' || card.dataset.type===f) card.style.display='block'; else card.style.display='none';
+        })
+      })
+    })
+
+    // Modal open
+    const modal = document.getElementById('modal');
+    const modalContent = document.getElementById('modalContent');
+    const modalTitle = document.getElementById('modalTitle');
+
+    document.querySelectorAll('#portfolio .card').forEach(card=>{
+      card.addEventListener('click', ()=>{
+        const type = card.dataset.type;
+        const title = card.dataset.title || '';
+        modalTitle.textContent = title;
+        if(type === 'video'){
+          const id = card.dataset.youtube;
+          modalContent.innerHTML = '<iframe src="https://www.youtube.com/embed/' + id + '?rel=0&amp;autoplay=1" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe>';
+        } else {
+          const img = card.dataset.image || card.querySelector('.thumb').style.backgroundImage.slice(5,-2);
+          modalContent.innerHTML = '<img src="'+img+'" alt="'+(title||'preview')+'" style="width:100%;height:auto;display:block">';
+        }
+        openModal();
+      })
+    })
+
+    function openModal(){modal.classList.add('open');modal.setAttribute('aria-hidden','false')}
+    function closeModal(){modal.classList.remove('open');modal.setAttribute('aria-hidden','true');modalContent.innerHTML=''}
+    window.addEventListener('keydown', (e)=>{ if(e.key==='Escape') closeModal() })
+
+    // Resume download placeholder
+    function downloadResume(e){e.preventDefault();alert('Attach your resume file and update the link in the HTML to enable downloads.')}
+
+    // Accessibility: allow click outside to close
+    modal.addEventListener('click', (e)=>{ if(e.target === modal) closeModal(); })
+  </script>
+</body>
+</html>
